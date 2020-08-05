@@ -1,0 +1,48 @@
+<%- include ("../partials/header") %>
+<div class="container">
+    <div class="row">
+        <h1 style="text-align: center">Edit <%= teacher.name %></h1>
+        <div style="width: 30%; margin: 25px auto;">
+            <form action="/teachers/<%= teacher._id %>?_method=PUT" method="POST">
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[name]" value="<%= teacher.name %>">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[description]" value="<%= teacher.description %>" >
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="email" name="teacher[email]" value="<%= teacher.email %>" >
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[age]" value="<%= teacher.age %>" >
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[experience]" 
+                    value="<%= teacher.experience %>">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[phone]" 
+                    value="<%= teacher.phone %>">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[address]" 
+                    value="<%= teacher.address %>">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[pinCode]" 
+                    value="<%= teacher.pinCode %>">
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" name="teacher[subject]" 
+                    value="<%= teacher.subject %>">
+                </div>
+                <div class="form-group">
+                    <input class="form-control btn btn-success" type="Submit">
+                </div>
+
+            </form>
+            <a href="/teachers">Go Back</a>
+        </div>
+    </div>
+</div>
+<%- include ("../partials/footer") %>

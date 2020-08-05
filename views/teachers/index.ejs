@@ -1,0 +1,47 @@
+<%- include ("../partials/header") %>
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" />
+ <div class="container">
+     <header class="jumbotron">
+         <div class="container">
+             <h1>Welcome To Tutor Delhi!</h1>
+             <p>Out hand-picked list of teachers from accross the country</p>
+         </div>
+     </header>
+     
+     <div class="row flex wrap" style="display:flex; flex-wrap: wrap;">
+        <% teachers.forEach(function(teacher){ %>
+        <%= console.log(teacher); %>
+        <div class = "col-md-4 col-sm-6">
+        <div class="thumbnail">
+ <div class="ui  cards">
+  <div class="card">
+    <div class="content">
+      <div class="header">
+      <p><strong>Name:</strong> <%= teacher.name %> </p>
+      </div>
+      <div class="meta">
+      <p> <strong>Expertise Subject:</strong> <%= teacher.subject %> </p>  
+      </div>
+      <div class="description">
+      <p><strong>Description:</strong> <%= teacher.description %></p>
+      
+      </div>
+    </div>
+    <div class="extra content">
+      <div class="ui two buttons">
+        <div class="ui basic green button">Contact Me</div>
+        <div>  <a href="/teachers/<%= teacher._id %>" class="ui basic green button">More Information</a></div>
+
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+
+        <% }); %>
+    </div>
+</div>
+</div>
+<%- include ("../partials/footer") %>

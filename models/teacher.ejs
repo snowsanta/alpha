@@ -1,0 +1,29 @@
+
+
+var mongoose = require("mongoose");
+
+  var teacherSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  description: String,
+  experience: String,
+  phone: String,
+  address: String,
+  subject: String,
+  author: {
+    id:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Teacher"
+    },
+    username: String
+  },
+   comments: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Comment"
+      }
+   ]
+});
+
+
+module.exports = mongoose.model("Teacher", teacherSchema);
