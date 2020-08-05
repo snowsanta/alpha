@@ -5,6 +5,10 @@
   <title>Tutor Delhi</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js">
   <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
@@ -197,22 +201,36 @@
 </head>
 <body >
 
- <nav class="navbar navbar-default navbar-expand-sm bg-light " >
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="/">Tutor Delhi</a>
-
-            </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="nav navbar-nav navbar-right ">
-                  <li class="nav-link"><a href="/teachers">Our Teachers <span class="sr-only">(current)</span></a></li>
-                    <li><a href="/students">Our Students</a></li>
+ <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="#">Tutor Delhi</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Explore
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/teachers">Our Teachers</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/students">Our Students</a>
+                    </div>
+                </li>
+                <ul class="nav navbar-nav navbar-right">
                 <% if(!currentUser){  %>
                      <li><a href="/login">Login</a></li>
                     <li><a href="/register">Sign Up</a></li>
 
                <%   }else{  %>
-
                     <li> <a> Signed In As <%= currentUser.username %> </a></li>
                     <li><a href="/logout">Logout</a></li>
                     <%   if(currentUser && currentUser.isTeacher) { %>
@@ -227,10 +245,11 @@
                     
                 
                 </ul>
-            </div>
+                
+            </ul>
+           
         </div>
     </nav>
-
 <div class="jumbotron text-center">
   <h1>Tutor Delhi</h1> 
   <p>Post your requirement | Get customized response | Compare and select </p> 
@@ -419,6 +438,15 @@ $(document).ready(function(){
   });
 })
 </script>
+
+<!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
 </body>
 </html>
