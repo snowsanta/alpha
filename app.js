@@ -29,7 +29,7 @@ var commentRoute     = require("./routes/comments"),
 
 // mongoose.connect("mongodb://localhost:27017/yelp_camp_teacherdirectoryP",{useNewUrlParser: true, useUnifiedTopology: true});
 
-mongoose.connect("mongodb+srv://dbadmin:<password>@shenanigansproj1.qyliq.mongodb.net/<dbname>?retryWrites=true&w=majority",{useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb+srv://dbadmin:Tutor@6969@shenanigansproj1.qyliq.mongodb.net/tutorSitedb?retryWrites=true&w=majority",{useNewUrlParser: true, useUnifiedTopology: true});
 
 
 
