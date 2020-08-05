@@ -73,7 +73,7 @@ router.post("/login", passport.authenticate("local",{
 router.get("/logout", function(req,  res){
     req.logout();
     req.flash("success", "Logged You Out");
-    res.redirect("/teachers");
+    res.redirect("/");
 });
 //User Profile
 router.get("/users/:id", function(req, res){
