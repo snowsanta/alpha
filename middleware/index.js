@@ -1,5 +1,6 @@
 //all middle ware goes here
 var Teacher = require("../models/teacher.ejs");
+var Student = require("../models/student.js");
 var Comment = require("../models/comment.js");
 var middlewareObj = {};
 
@@ -27,6 +28,34 @@ middlewareObj.checkCampgroundOwnership = function (req, res, next){
             res.redirect("back")
         }
 }
+
+//*********************
+//student authentication:
+middlewareObj.checkStudentOwnership = function (req, res, next){
+    if(req.isAuthenticated()){
+       Student.findById(req.params.id, function(err, foundstudent){
+        if(err){
+            req.flash("error", "Something went wrong!");
+            res.redirect("back");
+        }
+        else{
+            //does user own the teacherDetails?
+            if(foundstudent.author.id.equals(req.user._id) || req.user.isAdmin){
+            next();  
+            } 
+            else{
+                res.flash("error", "You don't have permission to do that");
+                res.redirect("back");
+            }
+            }
+        });
+            
+        }
+        else{
+            res.redirect("back")
+        }
+}
+
 
 middlewareObj.checkCommentOwnership = function (req, res, next){
     if(req.isAuthenticated()){

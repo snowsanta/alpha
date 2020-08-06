@@ -202,7 +202,7 @@
 <body >
 
  <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="#">Tutor Delhi</a>
+        <a class="navbar-brand" href="/">Tutor Delhi</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -255,42 +255,30 @@
   <p>Post your requirement | Get customized response | Compare and select </p> 
  
 </div>
-<div class="container">
+<div class="container" >
   <h3 style="text-align: center">Get your quick matching</h3>
   <div class="jumbotron">
     <div class= "row">
-         <div class="col-md-6" style="text-align: center">
+         <div class="col-md-6 " style="margin-left: 25%">
            <form action="/teachers" method="GET">
-                <div class="active-cyan-4 mb-4">
-                   <input class="form-control" type="text" placeholder="Search Teachers" aria-label="Search">
-                     </div>
-                    <input type="submit" value="Search" class="btn btn-default">
+                
+                   
+                    <select name="Subject" class="form-control">
+                     <option value="Maths">Maths</option>
+                      <option value="Science">Science</option>
+                      <option value="English">English</option>
+                      <option value="Hindi/Sanscrit">Hindi/Sanscrit</option>
+                      <option value="IT">IT</option>
+                     </select>
+                    <input style="margin-top: 10px  " type="submit" value="Search" class="btn btn-default">
+                    
            </form>    
           </div>
-           <div class = "col-md-6" style="text-align: center">
-         <form action="/students" method="GET">
-                <div class="active-cyan-4 mb-4">
-                  <input class="form-control" type="text" placeholder="Search Students" aria-label="Search">
-                </div>
-                 <input type="submit" value="Search" class="btn btn-default">
-        </form>
-     </div>
+         
       </div>
   </div>
 </div>
-<div>
-  <div >
-    
-       <div class="">
-
-       
-
-
-      
-
-   </div> 
-  </div>
-</div> 
+ 
 </div>
 
 <!-- Container (About Section) -->

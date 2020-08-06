@@ -4,29 +4,59 @@
         <h1 style="text-align: center">Register Yourself</h1>
         <div style="width: 30%; margin: 25px auto;">
             <form action="/students" method="POST">
-                <div class="form-group">
+               <label>Name:</label> <div class="form-group">
                     <input class="form-control" type="text" name="name" placeholder="name">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="email" name="email" placeholder="Email">
+                    <label>Email:</label><input class="form-control" type="email" name="email" placeholder="Email">
                 </div>
                  <div class="form-group">
-                    <input class="form-control" type="text" name="preference" placeholder="preference">
-                </div>
+                   <label for="budget">Budget:</label>
+                    <select name="budget" class="form-control">
+                     <option value="Under 5000">Under 5000</option>
+                      <option value="Under 7000">Under 7000</option>
+                      <option value="Under 10,000">Under 10,000</option>
+                      
+                      
+                     </select>
+                     </div>
                 
+                 <div class="form-group">
+                   <label for="location">Place of study:</label>
+                    <select name="location" class="form-control">
+                     <option value="Online">Online(Zoom/Meet)</option>
+                      <option value="Home">Home</option>
+                      <option value="Other">Other</option>
+                     </select>
+                     </div>
+
                 <div class="form-group">
-                    <input class="form-control" type="text" name="budget" placeholder="Budget(in Rps)">
-                </div>
+                   <label for="preference">Choose a catagory:</label>
+                    <select name="preference" class="form-control">
+                     <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                     </select>
+                     </div>
+
+
+
+                                <div class="form-group">
+                                     <label>Phone Number:</label><input class="form-control" type="text" name="phone" placeholder="Phone Number">
+                               </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" name="phone" placeholder="Phone Number">
-                </div>
-                <div class="form-group">
-                    <input class="form-control" type="text" name="address" placeholder="Address">
+                    <label>Address:</label><input class="form-control" type="text" name="address" placeholder="Address">
                 </div>
                
                 <div class="form-group">
-                    <input class="form-control" type="text" name="subject" placeholder=" Subject">
-                </div>
+                   <label for="subject">Subject:</label>
+                    <select name="subject" class="form-control">
+                     <option value="Maths">Maths</option>
+                      <option value="Science">Science</option>
+                      <option value="English">English</option>
+                      <option value="Hindi/Sanscrit">Hindi/Sanscrit</option>
+                      <option value="IT">IT</option>
+                     </select>
+                     </div>
                 
                
                 

@@ -41,6 +41,8 @@ router.post("/register", function(req, res){
             req.flash("success", "Welcome " + user.username );
             if(req.body.typeCode === 'Teacher'){
                 req.flash("success", " | This is your Teacher ID");
+                res.redirect("/");
+
             }
             else{
              req.flash("success", " | This is your Student ID");
@@ -61,7 +63,7 @@ router.get("/login", function(req, res){
 });
 //handling login logic
 router.post("/login", passport.authenticate("local",{
-    successRedirect: "/teachers",
+    successRedirect: "/",
     failureRedirect: "/login",
     failureFlash:    true,
     successFlash: 'Welcome to Tutor Delhi'

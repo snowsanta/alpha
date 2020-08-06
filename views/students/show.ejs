@@ -20,8 +20,9 @@
          
          <p><strong>Parent Budget:</strong><%=  student.budget%></p>
          <p><strong>Phone Number:</strong><%=  student.phone %></p>
-         <p><strong>Any Specific Subject Subject:</strong><%=  student.subject %></p>
+         <p><strong>Any Specific Subject:</strong><%=  student.subject %></p>
          <p><strong>Address:</strong> <%=  student.address %></p>
+         <p><strong>Place of study:</strong> <%=  student.location %></p>
          
          <p> 
             <em> Post By: <%= student.author.username %> </em>
@@ -37,9 +38,10 @@
          </div>
          </div>
 <div class="well">
+<h3>Comments</h3>
 <div class ="text-right">
 
-<a class="btn btn-success" href="/students/<%= student._id %>/comments/new">Add a new comment </a>
+<a class="btn btn-success" href="/students/<%= student._id %>/comments/snew">Add a new comment </a>
  </div>
  <hr>
 
@@ -47,13 +49,13 @@
  <div class="row">
    <div class="col-md-12">
    <strong> <%= comment.author.username %> </strong>
-   <span class="pull-right">10 days ago</span>
+   <span class="pull-right">....</span>
    <p> 
      <%= comment.text %>
    </p>
 <% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin ){ %>
    <a class="btn btn-xs btn-warning"
-    href="/students/<%= student._id %>/comments/<%= comment._id%>/edit">Edit</a>
+    href="/students/<%= student._id %>/comments/<%= comment._id%>/sedit">Edit</a>
    <form style = " display: inline" action="/students/<%= student._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
    <button class="btn btn-xs btn-danger"> Delete </button>
    </form>

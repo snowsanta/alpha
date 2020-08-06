@@ -13,16 +13,39 @@ var Comment    = require("../models/comment");
 
 router.get("/teachers", function(req, res){
     console.log(req.user);
-    if(req.query.search){
-        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    if(req.query.Subject){
+        const regex = new RegExp(escapeRegex(req.query.Subject), 'gi');
        Teacher.find({subject: regex}, function(err, allteachers){
        if(err){
            console.log(err);
        } else {
-          res.render("teachers/index",{teachers:allteachers, currentUser: req.user});
+          res.render("teachers/sindex",{teachers:allteachers, currentUser: req.user});
+         
        }
     });
     }
+    else  if(req.query.address){
+            const regey = new RegExp(escapeRegey(req.query.address), 'gi');
+            Teacher.find({address: regey}, function(err, allteachers){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    res.render("teachers/s2index", {teachers: allteachers, currentUser: req.user});
+                }
+            });
+          }
+          else  if(req.query.experience){
+            const regex = new RegExp(escapeRegex(req.query.address), 'gi');
+            Teacher.find({experience: regex}, function(err, allteachers){
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    res.render("teachers/s3index", {teachers: allteachers, currentUser: req.user});
+                }
+            });
+          }
     else{
     // Get all teacherss from DB
     Teacher.find({}, function(err, allteachers){
@@ -159,6 +182,11 @@ router.delete("/teachers/:id/comments/:comment_id",middleware.checkCommentOwners
 function escapeRegex(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
+function escapeRegey(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+
 
 
 

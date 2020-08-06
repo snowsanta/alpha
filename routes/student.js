@@ -9,13 +9,14 @@ var Comment    = require("../models/comment");
 
 router.get("/students", function(req, res){
     console.log(req.user);
-    if(req.query.search){
-        const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-       Student.find({subject: regex}, function(err, allstudents){
+    if(req.query.Subject){
+        const regex = new RegExp(escapeRegex(req.query.Subject), 'gi');
+       Student.find({ subject: regex}, function(err, allstudents){
        if(err){
            console.log(err);
        } else {
-          res.render("students/index",{students:allstudents, currentUser: req.user});
+          res.render("students/sindex",{students:allstudents, currentUser: req.user});
+          
        }
     });
     }
@@ -36,6 +37,7 @@ router.post("/students",middleware.isLoggedIn, function(req, res){
     // get data from form and add to students array
     var name       = req.body.name;
     var mail       = req.body.email;
+    var location   = req.body.location;
     var preference = req.body.preference;
     var phone      = req.body.phone;
     var address    = req.body.address;
@@ -45,7 +47,7 @@ router.post("/students",middleware.isLoggedIn, function(req, res){
         id: req.user._id,
         username: req.user.username
     }
-    var newstudent = {name: name, subject: subject, preference: preference, author: author, email: mail,
+    var newstudent = {name: name, subject: subject, location: location, preference: preference, author: author, email: mail,
                          phone: phone, address: address, budget: budget}
     // Create a new student and save to DB
     
@@ -81,14 +83,14 @@ router.get("/students/:id",middleware.isLoggedIn, function(req, res){
 });
 
 //EDIT route
-router.get("/students/:id/edit", middleware.checkCampgroundOwnership, function(req,res){
+router.get("/students/:id/edit", middleware.checkStudentOwnership, function(req,res){
        Student.findById(req.params.id, function(err, foundStudent){
             res.render("students/edit", { student: foundStudent});   
         });
             });
 
 //update router
-router.put("/students/:id",middleware.checkCampgroundOwnership, function(req, res){
+router.put("/students/:id",middleware.checkStudentOwnership, function(req, res){
     //find and update the correct teachers
     Student.findByIdAndUpdate(req.params.id, req.body.student, function(err, UpdatedStudent){
         if(err){
@@ -101,7 +103,7 @@ router.put("/students/:id",middleware.checkCampgroundOwnership, function(req, re
 });
 
 //Delete Route
-router.delete("/students/:id",middleware.checkCampgroundOwnership, function(req, res){
+router.delete("/students/:id",middleware.checkStudentOwnership, function(req, res){
     Student.findByIdAndRemove(req.params.id, function(err){
         if(err){
             res.redirect("/students");
@@ -122,7 +124,7 @@ router.get("/students/:id/comments/:comment_id/edit",middleware.checkCommentOwne
         res.redirect("back");
     }
     else{
-        res.render("comments/edit", { student_id: req.params.id, comment: foundComment});
+        res.render("comments/sedit", { student_id: req.params.id, comment: foundComment});
     }
    });
 });
@@ -154,6 +156,10 @@ router.delete("/students/:id/comments/:comment_id",middleware.checkCommentOwners
 });
 
 function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+function escapeRegey(text) {
     return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 

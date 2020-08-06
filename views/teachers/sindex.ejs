@@ -5,8 +5,25 @@
      <header class="jumbotron">
          <div class="container">
              <h1>Welcome To Tutor Delhi!</h1>
-             <p>Out hand-picked list of teachers from accross the country</p>
-         <a href="/register"><button class=" btn btn-primary" href="/register">Register </button>
+             <p>These results are based on your preference on basis of Subject:</p>
+             <h4>Please use the following dropdown to find more specific teachers </h4>
+<div class = "col-md-6">
+
+
+                      <form action="/teachers" method="GET">
+                
+                   
+                    <select name="address" class="form-control">
+                     <option value="Online">Online(Zoom/Meet)</option>
+                      <option value="Home">Home</option>
+                      <option value="Other">Other</option>
+                     </select>
+                    <input style="margin-top: 10px  " type="submit" value="Search" class="btn btn-default">
+                    
+           </form>
+
+                
+</div>
          </div>
 
      </header>
@@ -28,7 +45,10 @@
       <div class="meta">
       <p> <strong>Available to teach at:</strong> <%= teacher.address %> </p>  
       </div>
+      <div class="description">
+      <p><strong>Description:</strong> <%= teacher.description %></p>
       
+      </div>
     </div>
     <div class="extra content">
       <div class="ui two buttons">

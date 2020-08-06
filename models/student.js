@@ -5,6 +5,7 @@ var mongoose = require("mongoose");
   var studentSchema = new mongoose.Schema({
   name: String,
   email: String,
+  location: String,
   preference : String,
   budget: String,
   phone: String,

@@ -5,44 +5,42 @@
      <header class="jumbotron">
          <div class="container">
              <h1>Welcome To Tutor Delhi!</h1>
-             <p>Out hand-picked list of Students from accross the country</p>
-         </div>
+             <p>These results are based on your preference on basis of Subject:</p>
+             <button class="btn btn-primary"><a href="/teachers">All Teachers</a></button>
+                     </div>
+
      </header>
      
      <div class="row flex wrap" style="display:flex; flex-wrap: wrap;">
-        <% students.forEach(function(student){ %>
-        <div class = " col-md-3 col-sm-6 ">
+        <% teachers.forEach(function(teacher){ %>
+        <%= console.log(teacher); %>
+        <div class = "col-md-4 col-sm-6">
         <div class="thumbnail">
  <div class="ui  cards">
   <div class="card">
     <div class="content">
-      <img class="right floated mini ui image" src="">
       <div class="header">
-      <p><strong>Name:</strong> <%= student.name %> </p>
+      <p><strong>Name:</strong> <%= teacher.name %> </p>
       </div>
       <div class="meta">
-      <p> <strong>Subject:</strong> <%= student.subject %> </p>  
+      <p> <strong>Expertise Subject:</strong> <%= teacher.subject %> </p>  
       </div>
       <div class="meta">
-      <p> <strong>Place of study:</strong> <%= student.location %> </p>  
-      </div>
-      <div class="description">
-      <p><strong>Gender Preference:</strong> <%= student.preference %></p>
+      <p><strong>Available to teach at:</strong> <%= teacher.address %></p>
       
       </div>
     </div>
     <div class="extra content">
       <div class="ui two buttons">
         <div class="ui basic green button">Contact Me</div>
-        <div>  <a href="/students/<%= student._id %>" class="ui basic green button">More Information</a></div>
+        <div>  <a href="/teachers/<%= teacher._id %>" class="ui basic green button">More Information</a></div>
 
       </div>
     </div>
   </div>
   </div>
-  </div>
-  </div>
-
+</div>
+</div>
 
         <% }); %>
     </div>
