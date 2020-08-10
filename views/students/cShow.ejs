@@ -1,0 +1,68 @@
+<%- include ("../partials/header") %>
+
+
+<div class="container">
+  <div class="row">
+     <div class="col-md-3">
+         <p class="lead">Students Info</p>
+           <div class = "list-group">
+             <li class = "list-group-item active">This is contact page!</li>
+             
+                   </div>
+                </div>
+     <div class="col-md-9">
+       <div class="thumbnail">
+         <%= console.log(student); %>
+         <div class="caption-full">
+         
+         <p><strong>Email:</strong><%=  student.email%></p>
+         <p><strong>Phone Number:</strong><%=  student.phone %></p>
+         
+         <p> 
+            <em> Post By: <%= student.author.username %> </em>
+         </p>
+
+
+         <% if(currentUser && student.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin){ %>
+         <a class="btn btn-warning btn-xs" href="/students/<%= student._id %>/<%= student.phone %>/edit">Edit </a>
+         <form  style="display: inline"action = "/students/<%= student._id %>?_method=DELETE" method="POST">
+         <button class="btn btn-danger btn-xs">Delete</button>
+         </form>
+         <% } %>
+         </div>
+         </div>
+<div class="well">
+<h3>Comments</h3>
+<div class ="text-right">
+
+<a class="btn btn-success" href="/students/<%= student._id %>/comments/snew">Add a new comment </a>
+ </div>
+ <hr>
+
+ <% student.comments.forEach(function(comment){ %>
+ <div class="row">
+   <div class="col-md-12">
+   <strong> <%= comment.author.username %> </strong>
+   <span class="pull-right">....</span>
+   <p> 
+     <%= comment.text %>
+   </p>
+<% if(currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin ){ %>
+   <a class="btn btn-xs btn-warning"
+    href="/students/<%= student._id %>/comments/<%= comment._id%>/sedit">Edit</a>
+   <form style = " display: inline" action="/students/<%= student._id %>/comments/<%= comment._id%>?_method=DELETE" method="POST">
+   <button class="btn btn-xs btn-danger"> Delete </button>
+   </form>
+   <% } %>
+   </div>
+   </div>
+   
+	
+<%  })  %>
+ </div>
+ </div>
+ </div>
+ </div>
+
+
+<%- include ("../partials/footer") %>

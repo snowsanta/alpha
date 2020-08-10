@@ -5,23 +5,14 @@ var middleware = require("../middleware");  //since our content is inside index 
 var Student    = require("../models/student.js");
 var Comment    = require("../models/comment");
 
+// let { checkStudentOwnership, isLoggedIn, isPaid } = require("../middleware");
+// router.use(isLoggedIn, isPaid);
 
-
+//Index-Show all students:
 router.get("/students", function(req, res){
     console.log(req.user);
-    if(req.query.Subject){
-        const regex = new RegExp(escapeRegex(req.query.Subject), 'gi');
-       Student.find({ subject: regex}, function(err, allstudents){
-       if(err){
-           console.log(err);
-       } else {
-          res.render("students/sindex",{students:allstudents, currentUser: req.user});
-          
-       }
-    });
-    }
-    // Get all teacherss from DB
-    else{
+    // if (req.query.paid) res.locals.success = 'Payment succeeded, welcome to Tutor Delhi!';
+    //Get all students form DB.
     Student.find({}, function(err, allstudents){
        if(err){
            console.log(err);
@@ -29,7 +20,7 @@ router.get("/students", function(req, res){
           res.render("students/index",{students:allstudents, currentUser: req.user});
        }
     });
-}
+
 });
 
 //CREATE - add new students to DB
@@ -74,7 +65,7 @@ router.get("/students/:id",middleware.isLoggedIn, function(req, res){
     //find the students with provided ID
     Student.findById(req.params.id).populate("comments").exec(function(err, foundStudent){
         if(err){
-            console.log(err);
+            req.flash("error", err.message);
         } else {
             //render show template with that students
             res.render("students/show", {student: foundStudent});
@@ -82,12 +73,33 @@ router.get("/students/:id",middleware.isLoggedIn, function(req, res){
     });
 });
 
+//show student contact details
+router.get("/students/:id/:phone",middleware.isLoggedIn,function(req, res){
+    //find the students with provided ID
+    Student.findById(req.params.id).populate("comments").exec(function(err, foundStudent){
+        if(err){
+            req.flash("error", err.message);
+        } else {
+            //render show template with that students
+            res.render("students/cShow", {student: foundStudent});
+        }
+    });
+});
+
+
 //EDIT route
 router.get("/students/:id/edit", middleware.checkStudentOwnership, function(req,res){
        Student.findById(req.params.id, function(err, foundStudent){
             res.render("students/edit", { student: foundStudent});   
         });
             });
+//EDIT route
+router.get("/students/:id/:phone/edit", middleware.checkStudentOwnership, function(req,res){
+       Student.findById(req.params.id, function(err, foundStudent){
+            res.render("students/cEdit", { student: foundStudent});   
+        });
+            });
+
 
 //update router
 router.put("/students/:id",middleware.checkStudentOwnership, function(req, res){
@@ -111,7 +123,7 @@ router.delete("/students/:id",middleware.checkStudentOwnership, function(req, re
         else{
                 req.flash("Success", "Success!");
 
-            res.redirect("/teachers");
+            res.redirect("/students");
         }
     });
 });

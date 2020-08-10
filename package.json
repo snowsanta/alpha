@@ -1,13 +1,13 @@
 {
   "name": "v2_new",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "This is TS project",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "author": "",
+  "author": "Yawar Azeem",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.0",
@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.5",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.3",
+    "env": "0.0.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "locus": "^2.0.4",
@@ -25,6 +26,8 @@
     "multer": "^1.4.2",
     "nodemailer": "^6.4.11",
     "passport": "^0.4.1",
-    "passport-local-mongoose": "^6.0.1"
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1",
+    "stripe": "^8.83.0"
   }
 }

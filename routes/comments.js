@@ -6,6 +6,8 @@ var middleware = require("../middleware");
 
 var Teacher    = require("../models/teacher.ejs");
 var Student    = require("../models/student.js");
+// let { checkCommentOwnership, isLoggedIn, isPaid } = require("../middleware");
+// router.use(isLoggedIn, isPaid);
 
 var Comment    = require("../models/comment");
 

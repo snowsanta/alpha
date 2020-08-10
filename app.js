@@ -13,17 +13,24 @@ var express       = require("express"),
     cookieParser  = require("cookie-parser"),
     dotenv        = require("dotenv"),
     methodOverride= require("method-override");
-    require('dotenv').config()
+require('dotenv').config()    
 
-
+//require routes
 var commentRoute     = require("./routes/comments"),    
     teacherRoute     = require("./routes/teacher"),
     indexRoute       = require("./routes/index"),
-    studentRoute     = require("./routes/student");
+    studentRoute     = require("./routes/student"),
+ middleware = require("./middleware");  //since our content is inside index file and index file automatically behaves as the root main file so we dont necessarily need to name it here.
+
    
-   // configure dotenv
+//    configure dotenv
 // require('dotenv').load();
 
+const { resolve } = require("path");
+
+// Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+const stripe = require("stripe")("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");
 
 
 
@@ -32,9 +39,10 @@ var commentRoute     = require("./routes/comments"),
 mongoose.connect("mongodb+srv://dbadmin:Tutor@6969@shenanigansproj1.qyliq.mongodb.net/tutorSitedb?retryWrites=true&w=majority",{useNewUrlParser: true, useUnifiedTopology: true});
 
 
-
+app.use(express.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
 app.use(cookieParser('secret'));
@@ -55,31 +63,12 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
-    // prop        = req.body.type;
+    res.locals.coins       = 1000;
+    
     res.locals.error       = req.flash("error");
     res.locals.success     = req.flash("success");
     next();
 });
-
-
-
-
-// Campground.create(
-//      {
-//          name: "Granite Hill", 
-//          image: "https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg",
-//          description: "This is a huge granite hill, no bathrooms.  No water. Beautiful granite!"
-         
-//      },
-//      function(err, campground){
-//       if(err){
-//           console.log(err);
-//       } else {
-//           console.log("NEWLY CREATED CAMPGROUND: ");
-//           console.log(campground);
-//       }
-//     });
-
     
 app.get("/", function(req, res){
     res.render("landing");
@@ -88,6 +77,35 @@ app.use(indexRoute);
 app.use(teacherRoute);
 app.use(commentRoute);
 app.use(studentRoute);
+
+
+// // GET checkout
+app.get('/checkout', middleware.isLoggedIn, (req, res) => {
+    if (req.user.isPaid) {
+        req.flash('success', 'Your account is already paid');
+        return res.redirect('/students');
+    }
+    res.render('checkout', { amount: 100 });
+});
+
+const calculateOrderAmount = items => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return 100;
+};
+
+ app.post("/create-payment-intent", async (req, res) => {
+  const { items } = req.body;
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(items),
+    currency: "inr"
+  });
+   res.send({
+    clientSecret: paymentIntent.client_secret
+  });
+});
 
 var port = process.env.PORT || 3000;
 

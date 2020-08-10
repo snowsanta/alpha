@@ -13,7 +13,22 @@ var async = require("async");
 var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 var Teacher = require("../models/teacher.ejs");
+var middleware = require("../middleware");  //since our content is inside index file and index file automatically behaves as the root main file so we dont necessarily need to name it here.
 
+
+// const { isLoggedIn } = require('../middleware');
+// const { resolve } = require("path");
+
+// Set your secret key. Remember to switch to your live secret key in production!
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+// const stripe = require("stripe")("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");
+
+//show root route
+router.get("/", function(req, res){
+  res.render("landing");
+});
+
+//show register page
 router.get("/register", function(req, res){
     res.render("register");
 });
@@ -33,8 +48,8 @@ router.post("/register", function(req, res){
     }
     User.register(newUser, req.body.password, function(err, user){
         if(err){
-            // console.log(error);
-            return res.render("register", {error: err.message});
+            req.flash("error", err.message);
+            return res.redirect("/register");
         }
         passport.authenticate("local")(req, res, function(){
            console.log(user);
@@ -56,7 +71,7 @@ router.post("/register", function(req, res){
 //show login form
 router.get("/login", function(req, res){
 
-    req.flash("error", "Something went wrong");
+    // req.flash("error", "Something went wrong");
     
   
   res.render("login");
@@ -65,7 +80,7 @@ router.get("/login", function(req, res){
 router.post("/login", passport.authenticate("local",{
     successRedirect: "/",
     failureRedirect: "/login",
-    failureFlash:    true,
+    failureFlash:   true,
     successFlash: 'Welcome to Tutor Delhi'
 }), function(req, res){
 
@@ -77,6 +92,58 @@ router.get("/logout", function(req,  res){
     req.flash("success", "Logged You Out");
     res.redirect("/");
 });
+
+
+// // GET checkout
+// router.get('/checkout', middleware.isLoggedIn, (req, res) => {
+//     if (req.user.isPaid) {
+//         req.flash('success', 'Your account is already paid');
+//         return res.redirect('/students');
+//     }
+//     res.render('checkout', { amount: 20 });
+// });
+
+// // POST pay
+// router.post('/pay', middleware.isLoggedIn, async (req, res) => {
+//     const { paymentMethodId, items, currency } = req.body;
+
+//     const amount = 2000;
+  
+//     try {
+//       // Create new PaymentIntent with a PaymentMethod ID from the client.
+//       const intent = await stripe.paymentIntents.create({
+//         amount,
+//         currency,
+//          description: 'Software development services',
+//         payment_method: paymentMethodId,
+//         error_on_requires_action: true,
+//         confirm: true
+//       });
+  
+
+//       console.log("💰 Payment received!");
+
+//       req.user.isPaid = true;
+//       await req.user.save();
+//       // The payment is complete and the money has been moved
+//       // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
+  
+//       // Send the client secret to the client to use in the demo
+//       res.send({ clientSecret: intent.client_secret });
+//     } catch (e) {
+//       // Handle "hard declines" e.g. insufficient funds, expired card, card authentication etc
+//       // See https://stripe.com/docs/declines/codes for more
+//       if (e.code === "authentication_required") {
+//         res.send({
+//           error:
+//             "This card requires authentication in order to proceeded. Please use a different card."
+//         });
+//       } else {
+//         res.send({ error: e.message });
+//       }
+//     }
+// });
+
 //User Profile
 router.get("/users/:id", function(req, res){
   User.findById(req.params.id, function(err, foundUser){

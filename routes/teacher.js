@@ -5,7 +5,8 @@ var middleware = require("../middleware");  //since our content is inside index 
 var Teacher    = require("../models/teacher.ejs");
 var Comment    = require("../models/comment");
 
-
+// let { checkTeacherOwnership, isLoggedIn, isPaid } = require("../middleware");
+// router.use(isLoggedIn, isPaid);
 
 
 
@@ -107,6 +108,20 @@ router.get("/teachers/:id", middleware.isLoggedIn, function(req, res){
         }
     });
 });
+
+//show teacher contact details
+router.get("/teachers/:id/:phone",middleware.isLoggedIn,function(req, res){
+    //find the teachers with provided ID
+    Teacher.findById(req.params.id).populate("comments").exec(function(err, foundTeacher){
+        if(err){
+            req.flash("error", err.message);
+        } else {
+            //render show template with that teachers
+            res.render("teachers/cShow", {teacher: foundTeacher});
+        }
+    });
+});
+
 
 //EDIT route
 router.get("/teachers/:id/edit", middleware.checkCampgroundOwnership, function(req,res){
