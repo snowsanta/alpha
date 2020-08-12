@@ -95,62 +95,80 @@ const calculateOrderAmount = items => {
   return 100;
 };
 
-// app.post("/create-payment-intent", async (req, res) => {
-//   const { items } = req.body;
-//   // Create a PaymentIntent with the order amount and currency
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: calculateOrderAmount(items),
-//     currency: "inr"
+app.post("/create-payment-intent", async (req, res) => {
+  const { paymentMethodId, items } = req.body;
+  try{
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(items),
+    currency: "inr",
+    payment_method: paymentMethodId,
+    error_on_requires_action: true,
+    confirm: true
 
-//   });
+  });
+  req.user.isPaid = true;
+      
 
-//   res.send({
-//     clientSecret: paymentIntent.client_secret;
+  res.send({
+    clientSecret: paymentIntent.client_secret
 
 
-//   });
+  });
+}
+catch(e){
+  if (e.code === "authentication_required") {
+        res.send({
+          error:
+            "This card requires authentication in order to proceeded. Please use a different card."
+        });
+      } else {
+        res.send({ error: e.message });
+      }
+    }
+
+
+});
+
+// // POST pay
+// app.post('/create-payment-intent', middleware.isLoggedIn, async (req, res) => {
+//     const { paymentMethodId, items, currency } = req.body;
+  
+//     try {
+//       // Create new PaymentIntent with a PaymentMethod ID from the client.
+//       const intent = await stripe.paymentIntents.create({
+//         amount: calculateOrderAmount(items),
+//         currency: "inr",
+//         payment_method: paymentMethodId,
+//         error_on_requires_action: true,
+//         confirm: true
+//       });
+  
+//       console.log("💰 Payment received!");
+
+//       req.user.isPaid = true;
+//       await req.user.save();
+//       // The payment is complete and the money has been moved
+//       // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
+  
+//       // Send the client secret to the client to use in the demo
+//       res.send({ 
+//         clientSecret: intent.client_secret 
+//       });
+//     } catch (e) {
+//       // Handle "hard declines" e.g. insufficient funds, expired card, card authentication etc
+//       // See https://stripe.com/docs/declines/codes for more
+//       // if (e.code === "authentication_required") {
+//       //   res.send({
+//       //     error:
+//       //       "This card requires authentication in order to proceeded. Please use a different card."
+//       //   });
+//       // } else {
+//       //   res.send({ error: e.message });
+//       // }
+//     }
 // });
 
-// POST pay
-app.post('/create-payment-intent', middleware.isLoggedIn, async (req, res) => {
-    const { paymentMethodId, items, currency } = req.body;
-
-    // const { items } = req.body;
-  
-    try {
-      // Create new PaymentIntent with a PaymentMethod ID from the client.
-      const intent = await stripe.paymentIntents.create({
-        amount,
-        currency,
-        payment_method: paymentMethodId,
-        error_on_requires_action: true,
-        confirm: true
-      });
-  
-      console.log("💰 Payment received!");
-
-      req.user.isPaid = true;
-      await req.user.save();
-      // The payment is complete and the money has been moved
-      // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
-  
-      // Send the client secret to the client to use in the demo
-      res.send({ 
-        clientSecret: intent.client_secret 
-      });
-    } catch (e) {
-      // Handle "hard declines" e.g. insufficient funds, expired card, card authentication etc
-      // See https://stripe.com/docs/declines/codes for more
-    //   if (e.code === "authentication_required") {
-    //     res.send({
-    //       error:
-    //         "This card requires authentication in order to proceeded. Please use a different card."
-    //     });
-    //   } else {
-    //     res.send({ error: e.message });
-    //   }
-    }
-});
 
 
 var port = process.env.PORT || 3000;
