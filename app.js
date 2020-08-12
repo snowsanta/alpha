@@ -102,30 +102,32 @@ app.post("/create-payment-intent", async (req, res) => {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "inr",
-    // payment_method: paymentMethodId,
-    // error_on_requires_action: true,
-    // confirm: true
+    payment_method: paymentMethodId,
+    error_on_requires_action: true,
+    confirm: true
 
   });
+ 
   req.user.isPaid = true;
+  console.log("This is here!");  
+  await req.user.save();
+  
       
 
   res.send({
+
     clientSecret: paymentIntent.client_secret
 
 
   });
+
 }
 catch(e){
-  if (e.code === "authentication_required") {
-        res.send({
-          error:
-            "This card requires authentication in order to proceeded. Please use a different card."
-        });
-      } else {
+  
+  
         res.send({ error: e.message });
       }
-    }
+    
 
 
 });
