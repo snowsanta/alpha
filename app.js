@@ -31,7 +31,7 @@ const { resolve } = require("path");
 // Set your secret key. Remember to switch to your live secret key in production!
 // See your keys here: https://dashboard.stripe.com/account/apikeys
 const stripe = require("stripe")("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");
-
+// const stripe = require("stripe")("sk_test_51HDZnHL1Ff9f3n193kvTrQSKzUZtEyw3oa5dofIEzrxRuooznXHl5Fp7tEQntTkIktRFptNHYwxaO1Wkcm374wIp00S1OgJQis");
 
 
 // mongoose.connect("mongodb://localhost:27017/yelp_camp_teacherdirectoryP",{useNewUrlParser: true, useUnifiedTopology: true});
@@ -95,17 +95,63 @@ const calculateOrderAmount = items => {
   return 100;
 };
 
- app.post("/create-payment-intent", async (req, res) => {
-  const { items } = req.body;
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
-    currency: "inr"
-  });
-   res.send({
-    clientSecret: paymentIntent.client_secret
-  });
+// app.post("/create-payment-intent", async (req, res) => {
+//   const { items } = req.body;
+//   // Create a PaymentIntent with the order amount and currency
+//   const paymentIntent = await stripe.paymentIntents.create({
+//     amount: calculateOrderAmount(items),
+//     currency: "inr"
+
+//   });
+
+//   res.send({
+//     clientSecret: paymentIntent.client_secret;
+
+
+//   });
+// });
+
+// POST pay
+app.post('/create-payment-intent', middleware.isLoggedIn, async (req, res) => {
+    const { paymentMethodId, items, currency } = req.body;
+
+    // const { items } = req.body;
+  
+    try {
+      // Create new PaymentIntent with a PaymentMethod ID from the client.
+      const intent = await stripe.paymentIntents.create({
+        amount,
+        currency,
+        payment_method: paymentMethodId,
+        error_on_requires_action: true,
+        confirm: true
+      });
+  
+      console.log("💰 Payment received!");
+
+      req.user.isPaid = true;
+      await req.user.save();
+      // The payment is complete and the money has been moved
+      // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
+  
+      // Send the client secret to the client to use in the demo
+      res.send({ 
+        clientSecret: intent.client_secret 
+      });
+    } catch (e) {
+      // Handle "hard declines" e.g. insufficient funds, expired card, card authentication etc
+      // See https://stripe.com/docs/declines/codes for more
+    //   if (e.code === "authentication_required") {
+    //     res.send({
+    //       error:
+    //         "This card requires authentication in order to proceeded. Please use a different card."
+    //     });
+    //   } else {
+    //     res.send({ error: e.message });
+    //   }
+    }
 });
+
 
 var port = process.env.PORT || 3000;
 

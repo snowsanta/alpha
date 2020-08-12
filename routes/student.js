@@ -74,7 +74,7 @@ router.get("/students/:id",middleware.isLoggedIn, function(req, res){
 });
 
 //show student contact details
-router.get("/students/:id/:phone",middleware.isLoggedIn,function(req, res){
+router.get("/students/:id/:phone",middleware.isLoggedIn, middleware.isPaid,function(req, res){
     //find the students with provided ID
     Student.findById(req.params.id).populate("comments").exec(function(err, foundStudent){
         if(err){

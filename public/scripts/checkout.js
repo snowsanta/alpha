@@ -88,10 +88,12 @@
 //*******************************
 
 // A reference to Stripe.js initialized with your real test publishable API key.
+// var stripe = Stripe("pk_test_51HDZnHL1Ff9f3n19SENlqSyAyCNOJXkjXnnEjp3wfL2JOjeHQdBjfLIV0yVS2t0CZpMISvbhRtVLRdgz02izZHCJ003mx3JOaA");
 var stripe = Stripe('pk_live_51HDZnHL1Ff9f3n19ajXLDplcveuyyE9Go1q28Tnv0iBs9SVKj7xUjJ39L4b5m6snU88er8r18vuVWe25aSVSYszQ0066UgY2oB');
 // The items the customer wants to buy
 var purchase = {
-  items: [{ id: "tutordelhi-registration-fee" }]
+  items: [{ id: "tutordelhi-registration-fee" }],
+  currency: "inr"
 };
 // Disable the button until we have Stripe set up on the page
 document.querySelector("button").disabled = true;

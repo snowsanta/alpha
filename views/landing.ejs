@@ -258,6 +258,18 @@
            
         </div>
     </nav>
+    <% if(error && error.length > 0) {%>
+<div class="alert alert-danger container" role="alert">
+    <%= error %>
+        
+    </div>
+    <% } %>
+    <% if(success && success.length>0) {%> 
+    <div class="alert alert-success container" role="alert">
+    <%= success %>
+        
+    </div>
+    <% } %>
 <div class="jumbotron text-center">
   <h1>Tutor Delhi</h1> 
   <p>Post your requirement | Get customized response | Compare and select </p> 
