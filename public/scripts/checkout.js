@@ -1,9 +1,4 @@
-//*******************************
-//Stripe Payment
-//*******************************
-
 // A reference to Stripe.js initialized with your real test publishable API key.
-// var stripe = Stripe("pk_test_51HDZnHL1Ff9f3n19SENlqSyAyCNOJXkjXnnEjp3wfL2JOjeHQdBjfLIV0yVS2t0CZpMISvbhRtVLRdgz02izZHCJ003mx3JOaA");
 var stripe = Stripe('pk_live_51HDZnHL1Ff9f3n19ajXLDplcveuyyE9Go1q28Tnv0iBs9SVKj7xUjJ39L4b5m6snU88er8r18vuVWe25aSVSYszQ0066UgY2oB');
 // The items the customer wants to buy
 var purchase = {
@@ -48,48 +43,11 @@ fetch("/create-payment-intent", {
       document.querySelector("button").disabled = event.empty;
       document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
     });
-
     var form = document.getElementById("payment-form");
     form.addEventListener("submit", function(event) {
       event.preventDefault();
-
-        changeLoadingState(true);
-  
-  stripe.createPaymentMethod("card", card)
-        .then(function(result) {
-          if (result.error) {
-            errorHandler(result.error.message);
-          } else {
-            orderData.paymentMethodId = result.paymentMethod.id;
-
-            return fetch("/pay", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify(orderData)
-            });
-          }
-        })
-        .then(function(result) {
-          return result.json();
-        })
-        .then(function(response) {
-          if (response.error) {
-            errorHandler(response.error);
-          } else {
-            changeLoadingState(false);
-            // redirect to /campgrounds with a query string
-            // that invokes a success flash message
-            window.location.href = '/students?paid=true'
-          }
-        }).catch(function(err) {
-          errorHandler(err.error);
-        });
-
       // Complete payment when the submit button is clicked
       payWithCard(stripe, card, data.clientSecret);
-
     });
   });
 // Calls stripe.confirmCardPayment
@@ -109,7 +67,6 @@ var payWithCard = function(stripe, card, clientSecret) {
         showError(result.error.message);
       } else {
         // The payment succeeded!
-        purchase.paymentMethodId = result.paymentMethod.id;
         orderComplete(result.paymentIntent.id);
       }
     });

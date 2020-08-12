@@ -102,9 +102,9 @@ app.post("/create-payment-intent", async (req, res) => {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "inr",
-    payment_method: paymentMethodId,
-    error_on_requires_action: true,
-    confirm: true
+    // payment_method: paymentMethodId,
+    // error_on_requires_action: true,
+    // confirm: true
 
   });
   req.user.isPaid = true;
