@@ -96,23 +96,42 @@ const calculateOrderAmount = items => {
 };
 
 app.post("/create-payment-intent", async (req, res) => {
-  const { paymentMethodId, items } = req.body;
+  const {  items } = req.body;
+   // Listen for the event.
+    // elem.addEventListener('success', function (e) { 
+    //     // isPaid = true;
+    //     // console.log("Payment Successfull!")
+    //     paymentMethodId = paymentMethodId;   
+    //     }, 
+    //     );
   try{
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "inr",
-    payment_method: paymentMethodId,
-    error_on_requires_action: true,
-    confirm: true
-
+    // payment_method: paymentMethodId,
+    // error_on_requires_action: true,
+    // confirm: true
   });
- 
-  req.user.isPaid = true;
-  console.log("This is here!");  
-  await req.user.save();
+
+
+  app.addEventListener('success', function(e){
+       
+       if (isTrue == 1) {
+      console.log("💰 Payment received!");  
+       }
+      // console.log("💰 Payment received!");
+      // req.user.isPaid = true;
+      // await req.user.save();
   
-      
+  });
+  // if(isTrue == 1){
+  //   console.log("This is awesome");
+  // }
+        // The payment is complete and the money has been moved
+      // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
+  
+      // Send the client secret to the client to use in the demo
 
   res.send({
 
@@ -123,11 +142,11 @@ app.post("/create-payment-intent", async (req, res) => {
 
 }
 catch(e){
-  
-  
+ 
         res.send({ error: e.message });
-      }
-    
+      
+    }
+
 
 
 });
