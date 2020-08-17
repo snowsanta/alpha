@@ -1,11 +1,12 @@
-var isTrue =  0;
 // A reference to Stripe.js initialized with your real test publishable API key.
-var stripe = Stripe('pk_live_51HDZnHL1Ff9f3n19ajXLDplcveuyyE9Go1q28Tnv0iBs9SVKj7xUjJ39L4b5m6snU88er8r18vuVWe25aSVSYszQ0066UgY2oB');
+var stripe = Stripe("pk_live_51HDZnHL1Ff9f3n19ajXLDplcveuyyE9Go1q28Tnv0iBs9SVKj7xUjJ39L4b5m6snU88er8r18vuVWe25aSVSYszQ0066UgY2oB");
+
 // The items the customer wants to buy
 var purchase = {
-  items: [{ id: "Teacher Registration Fee" }],
-  currency: "inr"
-};
+    items: [{ id: "Teacher Registration Fee" }],
+    currency: "inr"
+    };
+
 // Disable the button until we have Stripe set up on the page
 document.querySelector("button").disabled = true;
 fetch("/create-payment-intent", {
@@ -68,15 +69,7 @@ var payWithCard = function(stripe, card, clientSecret) {
         showError(result.error.message);
       } else {
         // The payment succeeded!
-       
         orderComplete(result.paymentIntent.id);
-        const event = new Event('success', { isTrue : 1});
-       // req.user.isPaid = true;
-       // console.log("Done");
-        // const event = new Event('success', {purchase.paymentMethodId = result.paymentIntent.id}); 
-        // const event = new Event('success');
-        // var event = new CustomEvent("success", { "detail": "Example of an event" });
-
       }
     });
 };

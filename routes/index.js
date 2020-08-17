@@ -14,14 +14,43 @@ var nodemailer = require("nodemailer");
 var crypto = require("crypto");
 var Teacher = require("../models/teacher.ejs");
 var middleware = require("../middleware");  //since our content is inside index file and index file automatically behaves as the root main file so we dont necessarily need to name it here.
-
-
 // const { isLoggedIn } = require('../middleware');
-// const { resolve } = require("path");
 
-// Set your secret key. Remember to switch to your live secret key in production!
-// See your keys here: https://dashboard.stripe.com/account/apikeys
-// const stripe = require("stripe")("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");
+const { resolve } = require("path");
+const stripe = require('stripe')('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');
+
+// // GET checkout
+router.get('/checkout', middleware.isLoggedIn, (req, res) => {
+    if (req.user.isPaid) {
+        req.flash('success', 'Your account is already paid');
+        return res.redirect('/students');
+    }
+    res.render('checkout', { amount: 100 });
+});
+
+const calculateOrderAmount = items => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return 100;
+};
+router.post("/create-payment-intent", async (req, res) => {
+  const { items } = req.body;
+  // Create a PaymentIntent with the order amount and currency
+  try{
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(items),
+    currency: "inr"
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret
+  });
+    }
+    catch(e){
+
+    }
+});
 
 //show root route
 router.get("/", function(req, res){
@@ -93,56 +122,6 @@ router.get("/logout", function(req,  res){
     res.redirect("/");
 });
 
-
-// // GET checkout
-// router.get('/checkout', middleware.isLoggedIn, (req, res) => {
-//     if (req.user.isPaid) {
-//         req.flash('success', 'Your account is already paid');
-//         return res.redirect('/students');
-//     }
-//     res.render('checkout', { amount: 20 });
-// });
-
-// // POST pay
-// router.post('/pay', middleware.isLoggedIn, async (req, res) => {
-//     const { paymentMethodId, items, currency } = req.body;
-
-//     const amount = 2000;
-  
-//     try {
-//       // Create new PaymentIntent with a PaymentMethod ID from the client.
-//       const intent = await stripe.paymentIntents.create({
-//         amount,
-//         currency,
-//          description: 'Software development services',
-//         payment_method: paymentMethodId,
-//         error_on_requires_action: true,
-//         confirm: true
-//       });
-  
-
-//       console.log("💰 Payment received!");
-
-//       req.user.isPaid = true;
-//       await req.user.save();
-//       // The payment is complete and the money has been moved
-//       // You can add any post-payment code here (e.g. shipping, fulfillment, etc)
-  
-//       // Send the client secret to the client to use in the demo
-//       res.send({ clientSecret: intent.client_secret });
-//     } catch (e) {
-//       // Handle "hard declines" e.g. insufficient funds, expired card, card authentication etc
-//       // See https://stripe.com/docs/declines/codes for more
-//       if (e.code === "authentication_required") {
-//         res.send({
-//           error:
-//             "This card requires authentication in order to proceeded. Please use a different card."
-//         });
-//       } else {
-//         res.send({ error: e.message });
-//       }
-//     }
-// });
 
 //User Profile
 router.get("/users/:id", function(req, res){

@@ -11,7 +11,6 @@ var UserSchema = new mongoose.Schema({
     resetPasswordExpires: Date,
     isAdmin: {type: Boolean, default: false},
     isTeacher: { type: Boolean, default: false},
-    isPremium: { type: Boolean, default: false},
     isPaid: { type: Boolean, default: false }
 });
 
